@@ -1,17 +1,18 @@
 package com.aayush.user_service.dto;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
     private Long id;
     private String name;
     private String surname;
     private String email;
     private String address;
-    private Boolean alerting;
+    private boolean alerting;
     private double energyAlertingThreshold;
 
 }
