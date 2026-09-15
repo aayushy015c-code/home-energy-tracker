@@ -18,7 +18,6 @@ public class UserService {
 
     public UserDTO createUser(UserDTO userDTO) {
         //simulate user creation logic
-        log.info("Creating user: {}", userDTO);
 
         final User createdUser = User.builder()
                 .name(userDTO.getName())
@@ -35,7 +34,6 @@ public class UserService {
     }
 
     public UserDTO getUserById(Long id) {
-        log.info("Getting user with id {}", id);
 
         return userRepository.findById(id)
                 .map(this::toDTO) // maps the Optional returned by user repo to User object to which futher is mapped to UserDTO
@@ -43,12 +41,10 @@ public class UserService {
     }
 
     public void updateUser(Long id, UserDTO userDTO) {
-        log.info("Updating User With Id : {}", id);
 
         // Optinal Mapped To User
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
-
 
         //updating existing user record with updated fields which we got from requestbody
         user.setName(userDTO.getName());
@@ -62,8 +58,6 @@ public class UserService {
     }
 
     public void deleteUser(Long id) {
-        log.info("Deleting User With ID : {}", id);
-
         //finding user to delete
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
