@@ -34,6 +34,43 @@ public class UserService {
         return toDTO(saved);
     }
 
+    public UserDTO getUserById(Long id) {
+        log.info("Getting user with id {}", id);
+
+        return userRepository.findById(id)
+                .map(this::toDTO) // maps the Optional returned by user repo to User object to which futher is mapped to UserDTO
+                .orElse(null);
+    }
+
+    public void updateUser(Long id, UserDTO userDTO) {
+        log.info("Updating User With Id : {}", id);
+
+        // Optinal Mapped To User
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+
+
+        //updating existing user record with updated fields which we got from requestbody
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+        user.setEmail(userDTO.getEmail());
+        user.setAddress(userDTO.getAddress());
+        user.setAlerting(userDTO.isAlerting()); // boolean
+        user.setEnergyAlertingThreshold(userDTO.getEnergyAlertingThreshold());
+
+        userRepository.save(user);
+    }
+
+    public void deleteUser(Long id) {
+        log.info("Deleting User With ID : {}", id);
+
+        //finding user to delete
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+
+        userRepository.delete(user);
+    }
+
     private UserDTO toDTO(User saved) {
         return UserDTO.builder()
                 .name(saved.getName())
